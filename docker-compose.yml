@@ -1,0 +1,53 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7.40
+    restart: always
+    volumes:
+      - ./fesvpn_xyz.sql:/docker-entrypoint-initdb.d/dump.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    networks:
+      default1:
+        ipv4_address: 10.5.0.3
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_USER=root
+      - PMA_PASSWORD=root
+    networks:
+      default1:
+        ipv4_address: 10.5.0.4
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - 8080:80
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/var/www/html:delegated
+    networks:
+      default1:
+        ipv4_address: 10.5.0.5
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - 8082:80
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/var/www/html:delegated
+    networks:
+      default1:
+        ipv4_address: 10.5.0.6
+networks:
+  default1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
