@@ -30,6 +30,10 @@ services:
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/var/www/html:delegated
+    extra_hosts:
+        - "frontend.demo:127.0.0.1"
+    hostname: frontend
+    domainname: demo
     networks:
       default1:
         ipv4_address: 10.5.0.5
