@@ -13,8 +13,7 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-echo '<br>';
-echo "IS FRONTEND";
+echo phpinfo();
 
 
 // Create connection

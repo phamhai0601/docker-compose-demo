@@ -13,7 +13,8 @@ if ($conn->connect_error) {
 }
 echo "Connected successfully";
 
-echo phpinfo();
+echo '<br>';
+echo "IS BACKEND";
 
 
 // Create connection
